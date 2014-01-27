@@ -7,14 +7,16 @@ class HumanResource{
 	
 	function salaryIsPaid(){
 		$day = $this->currentDate->format('j');
-		if(25 == $day) {
+		if(25 === $day) {
 			return "You are rich man";
-		}else if(24 == $day){
+		}else if(24 === $day){
 			return "Tomorrow dude";
 		}else {
 			$weekDay = $this->currentDate->format('j-w');
 			if("23-5" === $weekDay){
 				return "22 days left";
+			}else if("24-5" === $weekDay){
+				return "23 days left";
 			}
 		}
  	}
@@ -55,5 +57,15 @@ class HumanResourceSpecification extends PHPUnit_Framework_TestCase {
 		$actual = $humanResource->salaryIsPaid();
 		$this->assertEquals($expected, $actual);
 	}
-
+	
+	function test24isFriday(){
+		$expected = "23 days left";
+	  $mockCurrentDate = $this->getMock('DateTime', array('format'));
+		$mockCurrentDate->expects($this->any())
+		                 ->method('format')									 
+										 ->will($this->returnValue("24-5"));
+		$humanResource = new HumanResource($mockCurrentDate);
+		$actual = $humanResource->salaryIsPaid();
+		$this->assertEquals($expected, $actual);
+	}
 }
