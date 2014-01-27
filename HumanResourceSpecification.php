@@ -1,40 +1,45 @@
 <?php
 class HumanResource{
-	public $date;
-	public $weekDay;
-	function __construct($date,$weekDay=false){
-		$this->date=$date;
-		if(false !== $weekDay) {
-			$this->weekDay = $weekDay;	
-		}
+	public $currentDate;
+	function __construct(DateTime $currentDate){
+		$this->currentDate = $currentDate;
 	}
+	
 	function salaryIsPaid(){
-		if($this->date==25){
-			return "You are rich man";	
-		}else if($this->date == 23 && $this->weekDay == "Friday") {
-			return "22 days left";
+		$day = $this->currentDate->format('j');
+		if(25 == $day) {
+			return "You are rich man";
+		}else if(24 == $day){
+			return "Tomorrow dude";
 		}
-		return "Tomorrow dude";
 	}
 }
 
 class HumanResourceSpecification extends PHPUnit_Framework_TestCase {
 	function testTodayIsPayDay(){
 		$expected = "You are rich man";
-		$date=25;
-		$humanResource = new HumanResource($date);
+	  $mockCurrentDate = $this->getMock('DateTime', array('format'));
+		$mockCurrentDate->expects($this->once())
+		                 ->method('format')
+										 ->with($this->equalTo('j'))
+										 ->will($this->returnValue(25));
+		$humanResource = new HumanResource($mockCurrentDate);
 		$actual = $humanResource->salaryIsPaid();
 		$this->assertEquals($expected, $actual);
 	}
 	
 	function testTomorrowIsPayDay(){
 		$expected = "Tomorrow dude";
-		$date=24;
-		$humanResource = new HumanResource($date);
+	  $mockCurrentDate = $this->getMock('DateTime', array('format'));
+		$mockCurrentDate->expects($this->once())
+		                 ->method('format')
+										 ->with($this->equalTo('j'))
+										 ->will($this->returnValue(24));
+		$humanResource = new HumanResource($mockCurrentDate);
 		$actual = $humanResource->salaryIsPaid();
 		$this->assertEquals($expected, $actual);
 	}
-	
+	/*
 	function test23isFriday(){
 		$expected = "22 days left";
 		$date=23;
@@ -42,5 +47,5 @@ class HumanResourceSpecification extends PHPUnit_Framework_TestCase {
 		$humanResource = new HumanResource($date, $weekDay);
 		$actual = $humanResource->salaryIsPaid();
 		$this->assertEquals($expected, $actual);
-	}
+	}*/
 }
