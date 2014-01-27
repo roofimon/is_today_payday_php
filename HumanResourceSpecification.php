@@ -11,6 +11,8 @@ class HumanResource{
 			return "You are rich man";
 		}else if(24 === $day){
 			return "Tomorrow dude";
+		}else if(1 === $day){
+			return "24 days left";
 		}else {
 			$weekDay = $this->currentDate->format('j-w');
 			if("23-5" === $weekDay){
@@ -64,6 +66,17 @@ class HumanResourceSpecification extends PHPUnit_Framework_TestCase {
 		$mockCurrentDate->expects($this->any())
 		                 ->method('format')									 
 										 ->will($this->returnValue("24-5"));
+		$humanResource = new HumanResource($mockCurrentDate);
+		$actual = $humanResource->salaryIsPaid();
+		$this->assertEquals($expected, $actual);
+	}
+	
+	function test1isToday(){
+		$expected = "24 days left";
+	  $mockCurrentDate = $this->getMock('DateTime', array('format'));
+		$mockCurrentDate->expects($this->any())
+		                 ->method('format')									 
+										 ->will($this->returnValue(1));
 		$humanResource = new HumanResource($mockCurrentDate);
 		$actual = $humanResource->salaryIsPaid();
 		$this->assertEquals($expected, $actual);
