@@ -1,13 +1,16 @@
 <?php
+require_once 'Payday.php';
 class HumanResource{
 	public $currentDate;
-	function __construct(DateTime $currentDate){
+  public $payday;
+	function __construct(Payday $payday, DateTime $currentDate){
+    $this->payday = $payday;
 		$this->currentDate = $currentDate;
 	}
 	
 	function salaryIsPaid(){
 		$day = $this->currentDate->format('j');
-		if(25 === $day) {
+		if($this->payday->getDate() === $day) {
 			return "You are rich man";
 		}else if(24 === $day){
 			return "Tomorrow dude";
@@ -27,16 +30,18 @@ class HumanResource{
 class HumanResourceSpecification extends PHPUnit_Framework_TestCase {
 	function testTodayIsPayDay(){
 		$expected = "You are rich man";
+    $payday = new Payday(new DateTime(2014-8-25));
 	  $mockCurrentDate = $this->getMock('DateTime', array('format'));
 		$mockCurrentDate->expects($this->once())
 		                 ->method('format')
 										 ->with($this->equalTo('j'))
 										 ->will($this->returnValue(25));
-		$humanResource = new HumanResource($mockCurrentDate);
+
+		$humanResource = new HumanResource($payday, $mockCurrentDate);
 		$actual = $humanResource->salaryIsPaid();
 		$this->assertEquals($expected, $actual);
 	}
-	
+/*	
 	function testTomorrowIsPayDay(){
 		$expected = "Tomorrow dude";
 	  $mockCurrentDate = $this->getMock('DateTime', array('format'));
@@ -103,4 +108,5 @@ class HumanResourceSpecification extends PHPUnit_Framework_TestCase {
 		$actual = $humanResource->salaryIsPaid();
 		$this->assertEquals($expected, $actual);
 	}
+ */
 }
