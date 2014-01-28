@@ -14,13 +14,11 @@ class HumanResource{
 		}else if(1 === $day){
 			return "24 days left";
 		}else {
-			$weekDay = $this->currentDate->format('j-w');
-			if("23-5" === $weekDay){
-				return "22 days left";
-			}else if(("24-5" === $weekDay)||("1-3" === $weekDay)){
-				return "23 days left";
-			}else if("1-4" === $weekDay){
-				return "22 days left";
+      $weekDay = $this->currentDate->format('j-w');
+      if(("23-5" === $weekDay)||("1-4" === $weekDay)){
+        return "22 days left";
+      }else if(("24-5" === $weekDay)||("1-3" === $weekDay)){
+        return "23 days left";
       }
 		}
  	}
