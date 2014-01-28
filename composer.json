@@ -1,5 +1,8 @@
 {
-  "require":{
+  "require-dev":{
     "phpunit/phpunit": "3.7.29"
+  },
+  "require":{
+    "silex/silex": "1.2.*@dev"
   }
 }
