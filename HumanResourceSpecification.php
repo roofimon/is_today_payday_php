@@ -21,6 +21,8 @@ class HumanResource{
       return "Tomorrow dude";
     }else if($actualPaydate > $currentDate){
       return $actualPaydate-$currentDate." days left and ".$actualPayday." ".$actualPaydate." is payday";
+    }else{
+      return "already paid dude.";
     }
   }
 }
@@ -80,4 +82,16 @@ class HumanResourceSpecification extends PHPUnit_Framework_TestCase {
     $this->assertEquals($expected, $actual);
   }
 
+  function testAlreadyPaidForThisMonth() {
+    $expected = "already paid dude.";
+    $mockCurrentDate = $this->getMock('DateTime', array('format'));
+    $payday = new Payday(new DateTime(2014-5-25));
+    $mockCurrentDate->expects($this->any())
+                    ->method('format')
+                    ->with($this->equalTo('j'))
+                    ->will($this->returnValue("26"));
+    $humanResource = new HumanResource($payday, $mockCurrentDate);
+    $actual = $humanResource->salaryIsPaid();
+    $this->assertEquals($expected, $actual);
+  }
 }
