@@ -20,7 +20,7 @@ class HumanResource{
     }else if($actualPaydate === $tomorrow){
       return "Tomorrow dude";
     }else if($actualPaydate > $currentDate){
-      return $actualPaydate-$currentDate." days left and ".$actualPayday." ".$actualPaydate." is payday";
+      return $actualPaydate-$currentDate." days left and $actualPayday $actualPaydate is payday";
     }else{
       return "already paid dude.";
     }
